@@ -1,10 +1,22 @@
 <script lang="ts">
     import { hasRoundStarted } from "../gameState.svelte";
+    import { onDestroy } from "svelte";
 
     let name: string = "John";
     let dutchPile: number = $state(0);
     let blitzPile: number = $state(0);
     let score: number = $state(0);
+
+    const unsubscribe = hasRoundStarted.subscribe((started) => {
+        if (started) {
+            let roundScore = dutchPile - blitzPile;
+            score += roundScore;
+        }
+    });
+
+    onDestroy(() => {
+        unsubscribe();
+    });
 </script>
 
 <style>
@@ -23,5 +35,5 @@
         <label for="blitz-pile">Blitz pile</label>
         <input type="number" id="blitz-pile" bind:value={blitzPile} name="blitz-pile" min=0 disabled={$hasRoundStarted}/>
     </div>
-    <p>Score: {dutchPile - blitzPile}</p>
+    <p>Score: {score}</p>
 </div>
