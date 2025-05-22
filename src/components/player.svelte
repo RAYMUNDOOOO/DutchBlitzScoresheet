@@ -13,11 +13,15 @@
         return hasWon;
     });
 
-    const unsubscribe = hasRoundStarted.subscribe((started) => {
-        if (started) {
+    function updateScore() {
+        if (isReady) {
             let roundScore = dutchPile - blitzPile;
             score += roundScore;
+        }
+    }
 
+    const unsubscribe = hasRoundStarted.subscribe((started) => {
+        if (started) {
             dutchPile = 0;
             blitzPile = 0;
         }
@@ -47,6 +51,6 @@
     <p>Score: {score}</p>
     <div>
         <label for="ready">Ready?</label>
-        <input type="checkbox" id="ready" bind:checked={isReady} name="ready" />
+        <input type="checkbox" id="ready" bind:checked={isReady} onchange={updateScore} name="ready" />
     </div>
 </div>
