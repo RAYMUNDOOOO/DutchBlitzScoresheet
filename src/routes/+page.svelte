@@ -9,10 +9,21 @@
     }
 </script>
 
+<style>
+    button {
+        border-color: black;
+        border-width: 1px;
+        border-radius: 3px;
+    }
+</style>
+
 {#each playerNames as name}
     <Player name={name} />
 {/each}
 <button onclick={AddPlayer} disabled={$hasRoundStarted}>Add player</button>
-<button onclick={() => hasRoundStarted.set(!$hasRoundStarted)}>
+<button 
+    style={$hasRoundStarted ? "color: red" : "color: green"} 
+    onclick={() => hasRoundStarted.set(!$hasRoundStarted)}
+    >
     {$hasRoundStarted ? "End round" : "Start round"}
 </button>
