@@ -1,11 +1,32 @@
 <script lang="ts">
     import Player from "../components/player.svelte";
-    import { hasRoundStarted } from "../gameState.svelte";
+    import { hasRoundStarted, timeRoundStarted } from "../gameState.svelte";
 
+    // PLAYER MANAGEMENT
     let playerNames: string[] = $state([]);
     const AddPlayer = () => {
         const name = prompt("Please enter new player's name:", "John");
         if (name) playerNames.push(name);
+    }
+
+    // ROUND MANAGEMENT
+    let roundTimerId: number = 0;
+    let roundTimeElapsed: number = $state(0);
+    function startRound() {
+        hasRoundStarted.set(true);
+        timeRoundStarted.set(Date.now());
+        roundTimerId = setInterval(() => {
+            const now = Date.now();
+            roundTimeElapsed += $timeRoundStarted - now;
+            roundTimeElapsed = parseFloat((roundTimeElapsed / 1000).toFixed(3));
+        }, 5);
+    }
+
+    function endRound() {
+        roundTimeElapsed = 0;
+        timeRoundStarted.set(0);
+        hasRoundStarted.set(false);
+        clearInterval(roundTimerId);
     }
 </script>
 
@@ -23,7 +44,7 @@
 <button onclick={AddPlayer} disabled={$hasRoundStarted}>Add player</button>
 <button 
     style={$hasRoundStarted ? "color: red" : "color: green"} 
-    onclick={() => hasRoundStarted.set(!$hasRoundStarted)}
+    onclick={$hasRoundStarted ? endRound : startRound}
     >
-    {$hasRoundStarted ? "End round" : "Start round"}
+    {$hasRoundStarted ? roundTimeElapsed : "Start round"}
 </button>
