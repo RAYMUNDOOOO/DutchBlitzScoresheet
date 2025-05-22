@@ -3,9 +3,12 @@
     import { onDestroy } from "svelte";
 
     let { name } = $props();
+
     let dutchPile: number = $state(0);
     let blitzPile: number = $state(0);
-    let score: number = $state(0);
+    let score: number = 0;
+    let displayedScore: number = $state(0);
+
     let isReady: boolean = $state(false);
     let hasWon: boolean = $derived.by(() => {
         let hasWon = false;
@@ -15,13 +18,17 @@
 
     function updateScore() {
         if (isReady) {
-            let roundScore = dutchPile - blitzPile;
-            score += roundScore;
+            displayedScore = score;
+            displayedScore += (dutchPile - blitzPile);
+        } else {
+            displayedScore = score;
         }
     }
 
     const unsubscribe = hasRoundStarted.subscribe((started) => {
         if (started) {
+            score = displayedScore;
+            isReady = false;
             dutchPile = 0;
             blitzPile = 0;
         }
@@ -48,7 +55,7 @@
         <label for="blitz-pile">Blitz pile</label>
         <input type="number" id="blitz-pile" bind:value={blitzPile} name="blitz-pile" min=0 disabled={$hasRoundStarted}/>
     </div>
-    <p>Score: {score}</p>
+    <p>Score: {displayedScore}</p>
     <div>
         <label for="ready">Ready?</label>
         <input type="checkbox" id="ready" bind:checked={isReady} onchange={updateScore} name="ready" />
