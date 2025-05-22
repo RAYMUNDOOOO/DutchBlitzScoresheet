@@ -6,6 +6,12 @@
     let dutchPile: number = $state(0);
     let blitzPile: number = $state(0);
     let score: number = $state(0);
+    let isReady: boolean = $state(false);
+    let hasWon: boolean = $derived.by(() => {
+        let hasWon = false;
+        if (score >= 75) hasWon = true;
+        return hasWon;
+    });
 
     const unsubscribe = hasRoundStarted.subscribe((started) => {
         if (started) {
@@ -29,7 +35,7 @@
 </style>
 
 <div id="player-container">
-    <h1>{name}</h1>
+    <h1 style={hasWon ? "color: green" : "color: black"}>{name}</h1>
     <div>
         <label for="dutch-pile">Dutch pile</label>
         <input type="number" id="dutch-pile" bind:value={dutchPile} name="dutch-pile" min=0 disabled={$hasRoundStarted} />
@@ -39,4 +45,8 @@
         <input type="number" id="blitz-pile" bind:value={blitzPile} name="blitz-pile" min=0 disabled={$hasRoundStarted}/>
     </div>
     <p>Score: {score}</p>
+    <div>
+        <label for="ready">Ready?</label>
+        <input type="checkbox" id="ready" bind:checked={isReady} name="ready" />
+    </div>
 </div>
