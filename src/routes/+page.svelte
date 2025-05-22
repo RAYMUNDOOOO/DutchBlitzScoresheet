@@ -2,14 +2,15 @@
     import Player from "../components/player.svelte";
     import { hasRoundStarted } from "../gameState.svelte";
 
-    let numPlayers: number[] = $state([]);
+    let playerNames: string[] = $state([]);
     const AddPlayer = () => {
-        numPlayers.push(numPlayers.length);
+        const name = prompt("Please enter new player's name:", "John");
+        if (name) playerNames.push(name);
     }
 </script>
 
-{#each numPlayers as player}
-    <Player />
+{#each playerNames as name}
+    <Player name={name} />
 {/each}
 <button onclick={AddPlayer} disabled={$hasRoundStarted}>Add player</button>
 <button onclick={() => hasRoundStarted.set(!$hasRoundStarted)}>

@@ -2,7 +2,7 @@
     import { hasRoundStarted } from "../gameState.svelte";
     import { onDestroy } from "svelte";
 
-    let name: string = "John";
+    let { name } = $props();
     let dutchPile: number = $state(0);
     let blitzPile: number = $state(0);
     let score: number = $state(0);
