@@ -11,6 +11,9 @@
         if (started) {
             let roundScore = dutchPile - blitzPile;
             score += roundScore;
+
+            dutchPile = 0;
+            blitzPile = 0;
         }
     });
 
