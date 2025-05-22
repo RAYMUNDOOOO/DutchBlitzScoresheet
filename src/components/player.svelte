@@ -12,7 +12,7 @@
     let isReady: boolean = $state(false);
     let hasWon: boolean = $derived.by(() => {
         let hasWon = false;
-        if (score >= 75) hasWon = true;
+        if (displayedScore >= 75) hasWon = true;
         return hasWon;
     });
 
