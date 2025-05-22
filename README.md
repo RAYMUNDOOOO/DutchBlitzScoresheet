@@ -10,6 +10,8 @@ So far this is just the MVP, so it can:
 - Start and stop a round
 - If a round has started, scores cannot be updated
 
+![MVP screenshot](docs/mvp.PNG)
+
 ## How to run it
 ```bash
 bun run dev --open # Will open in your default browser
