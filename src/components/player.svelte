@@ -58,6 +58,6 @@
     <p>Score: {displayedScore}</p>
     <div>
         <label for="ready">Ready?</label>
-        <input type="checkbox" id="ready" bind:checked={isReady} onchange={updateScore} name="ready" />
+        <input type="checkbox" id="ready" bind:checked={isReady} onchange={updateScore} name="ready" disabled={$hasRoundStarted} />
     </div>
 </div>
