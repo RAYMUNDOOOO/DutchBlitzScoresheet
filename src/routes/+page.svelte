@@ -1,6 +1,6 @@
 <script lang="ts">
     import Player from "../components/player.svelte";
-    import { hasRoundStarted, timeRoundStarted } from "../gameState.svelte";
+    import { hasRoundStarted, timeRoundStarted, readyChecks } from "../gameState.svelte";
 
     // PLAYER MANAGEMENT
     let playerNames: string[] = $state([]);
@@ -22,11 +22,20 @@
         return roundTimeElapsedString;
     })
 
-    // Start the round and increment how much time has elapsed for the round.
+    /**
+     * Check if there are players in the game first and double check the game master wants to start.
+     * Check if there are players in the game and if they are all ready. If not all ready, double check the game master wants to start. 
+     * Otherwise, start the round and set up the timer interval.
+     */
     function startRound() {
         if (playerNames.length === 0) {
            let confirmation = confirm("There are no players in this game yet, are you sure you want to start?");
            if (!confirmation) return;
+        }
+
+        if (playerNames.length > 0 && playerNames.length !== readyChecks.numPlayersReady) {
+            let confirmation = confirm("Not everyone is ready, are you sure you want to start?");
+            if (!confirmation) return;
         }
 
         hasRoundStarted.set(true);

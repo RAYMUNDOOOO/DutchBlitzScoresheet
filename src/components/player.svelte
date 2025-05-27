@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { hasRoundStarted } from "../gameState.svelte";
+    import { hasRoundStarted, readyChecks } from "../gameState.svelte";
     import { onDestroy } from "svelte";
 
     let { name } = $props();
@@ -16,12 +16,21 @@
         return hasWon;
     });
 
-    function updateScore() {
+    /**
+     * When the player is ready, update their displayed score and add to the ready check counter so the 
+     * main page knows whether everyone is ready to start the round.
+     * 
+     * If the player is not ready, don't update their displayed score and decrement the ready check counter
+     * so the main page knows not everyone is ready to start the round.
+     */
+    function onReady() {
         if (isReady) {
             displayedScore = score;
             displayedScore += (dutchPile - blitzPile);
+            readyChecks.numPlayersReady++;
         } else {
             displayedScore = score;
+            readyChecks.numPlayersReady--;
         }
     }
 
@@ -58,6 +67,6 @@
     <p>Score: {displayedScore}</p>
     <div>
         <label for="ready">Ready?</label>
-        <input type="checkbox" id="ready" bind:checked={isReady} onchange={updateScore} name="ready" disabled={$hasRoundStarted} />
+        <input type="checkbox" id="ready" bind:checked={isReady} onchange={onReady} name="ready" disabled={$hasRoundStarted} />
     </div>
 </div>
