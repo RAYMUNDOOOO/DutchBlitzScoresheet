@@ -24,6 +24,11 @@
 
     // Start the round and increment how much time has elapsed for the round.
     function startRound() {
+        if (playerNames.length === 0) {
+           let confirmation = confirm("There are no players in this game yet, are you sure you want to start?");
+           if (!confirmation) return;
+        }
+
         hasRoundStarted.set(true);
         timeRoundStarted.set(Date.now());
 
