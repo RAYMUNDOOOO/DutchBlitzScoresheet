@@ -10,6 +10,7 @@
     }
 
     // ROUND MANAGEMENT
+    let roundHistory: number[] = $state([]);
     let roundTimerId: number = 0;
     let roundTimeElapsed: number = $state(0);
     let roundTimeElapsedString: string = $derived.by(() => {
@@ -34,6 +35,7 @@
 
     // End the round and reset timer and game state.
     function endRound() {
+        roundHistory.push(roundTimeElapsed);
         roundTimeElapsed = 0;
         timeRoundStarted.set(0);
         hasRoundStarted.set(false);
@@ -59,3 +61,6 @@
     >
     {$hasRoundStarted ? roundTimeElapsedString : "Start round"}
 </button>
+{#each roundHistory as timeElapsed, i}
+    <div>Round {i + 1} - Time elapsed: {timeElapsed.toFixed(2)}</div>
+{/each}

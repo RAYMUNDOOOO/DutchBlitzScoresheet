@@ -1,4 +1,5 @@
 import { writable } from 'svelte/store';
 
-export const hasRoundStarted = writable(false);
-export const timeRoundStarted = writable(0);
+// ROUND INFORMATION
+export const hasRoundStarted = writable(false);     // Boolean to indicate if the round has started
+export const timeRoundStarted = writable(0);        // Set initially on round start to keep track of time elapsed in round
