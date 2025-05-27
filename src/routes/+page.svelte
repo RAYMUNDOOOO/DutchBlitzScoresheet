@@ -13,14 +13,15 @@
     let roundTimerId: number = 0;
     let roundTimeElapsed: number = $state(0);
     let roundTimeElapsedString: string = $derived.by(() => {
-        const minutes: number = Math.floor(roundTimeElapsed / 60);
-        const seconds: number = Math.floor(roundTimeElapsed % 60);
-        const milliseconds: number = parseFloat(((roundTimeElapsed % 60) % 1).toFixed(2).replace(/\d+\./g, ''));
+        const minutes: string = Math.floor(roundTimeElapsed / 60).toString().padStart(2, "0");          // Minutes elapsed with a leading 0
+        const seconds: string = Math.floor(roundTimeElapsed % 60).toString().padStart(2, "0");          // Seconds elapsed with a leading 0
+        const milliseconds: string = ((roundTimeElapsed % 60) % 1).toFixed(2).replace(/\d+\./g, '');    // Milliseconds elapsed - regex to remove the whole number of the decimal
         const roundTimeElapsedString: string = `${minutes}:${seconds}:${milliseconds}`; 
 
         return roundTimeElapsedString;
     })
 
+    // Start the round and increment how much time has elapsed for the round.
     function startRound() {
         hasRoundStarted.set(true);
         timeRoundStarted.set(Date.now());
@@ -31,6 +32,7 @@
         }, 5);
     }
 
+    // End the round and reset timer and game state.
     function endRound() {
         roundTimeElapsed = 0;
         timeRoundStarted.set(0);
