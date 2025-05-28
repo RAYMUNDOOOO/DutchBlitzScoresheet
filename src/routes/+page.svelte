@@ -2,7 +2,7 @@
     import Player from "../components/player.svelte";
     import { browser } from "$app/environment";
     import { onDestroy } from "svelte";
-    import { hasRoundStarted, timeRoundStarted, numPlayersReady, winners } from "../gameState.svelte";
+    import { hasRoundStarted, timeRoundStarted, numPlayersReady, winners, resetPlayers } from "../gameState.svelte";
 
     // PLAYER MANAGEMENT
     let playerNames: string[] = $state([]);
@@ -29,6 +29,8 @@
         if (num === playerNames.length && winners.length > 0) {
             if (browser) {
                 alert(`CONGRATULATIONS TO ${winners.toString()} FOR BEING THE BIGGEST SWEATS`);
+                resetPlayers.set(true);
+                roundHistory = [];
             }
         }
     })

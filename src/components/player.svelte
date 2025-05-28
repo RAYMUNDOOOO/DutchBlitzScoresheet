@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { hasRoundStarted, numPlayersReady, addWinner, removeWinner } from "../gameState.svelte";
+    import { hasRoundStarted, numPlayersReady, addWinner, removeWinner, resetPlayers } from "../gameState.svelte";
     import { onDestroy } from "svelte";
 
     let { name } = $props();
@@ -49,8 +49,19 @@
         }
     });
 
+    const unsubscribeResetPlayers = resetPlayers.subscribe((reset) => {
+        if (reset) {
+            dutchPile = 0;
+            blitzPile = 0;
+            score = 0;
+            displayedScore = 0;
+            isReady = false;
+        }
+    })
+
     onDestroy(() => {
         unsubscribe();
+        unsubscribeResetPlayers();
     });
 </script>
 
