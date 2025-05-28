@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { hasRoundStarted, readyChecks } from "../gameState.svelte";
+    import { hasRoundStarted, numPlayersReady, addWinner, removeWinner } from "../gameState.svelte";
     import { onDestroy } from "svelte";
 
     let { name } = $props();
@@ -12,7 +12,13 @@
     let isReady: boolean = $state(false);
     let hasWon: boolean = $derived.by(() => {
         let hasWon = false;
-        if (displayedScore >= 75) hasWon = true;
+        if (displayedScore >= 75) {
+            hasWon = true;
+            addWinner(name);
+        } else {
+            removeWinner(name);
+        }
+
         return hasWon;
     });
 
@@ -27,10 +33,10 @@
         if (isReady) {
             displayedScore = score;
             displayedScore += (dutchPile - blitzPile);
-            readyChecks.numPlayersReady++;
+            $numPlayersReady++;
         } else {
             displayedScore = score;
-            readyChecks.numPlayersReady--;
+            $numPlayersReady--;
         }
     }
 
