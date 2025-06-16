@@ -1,89 +1,49 @@
 <script lang="ts">
-    import { hasRoundStarted, numPlayersReady, addWinner, removeWinner, resetPlayers } from "../gameState.svelte";
-    import { onDestroy } from "svelte";
+	let { name, score } = $props();
+	let dutchPile: number = $state(0);
+	let blitzPile: number = $state(0);
 
-    let { name } = $props();
-
-    let dutchPile: number = $state(0);
-    let blitzPile: number = $state(0);
-    let score: number = 0;
-    let displayedScore: number = $state(0);
-
-    let isReady: boolean = $state(false);
-    let hasWon: boolean = $derived.by(() => {
-        let hasWon = false;
-        if (displayedScore >= 75) {
-            hasWon = true;
-            addWinner(name);
-        } else {
-            removeWinner(name);
-        }
-
-        return hasWon;
-    });
-
-    /**
-     * When the player is ready, update their displayed score and add to the ready check counter so the 
-     * main page knows whether everyone is ready to start the round.
-     * 
-     * If the player is not ready, don't update their displayed score and decrement the ready check counter
-     * so the main page knows not everyone is ready to start the round.
-     */
-    function onReady() {
-        if (isReady) {
-            displayedScore = score;
-            displayedScore += (dutchPile - blitzPile);
-            $numPlayersReady++;
-        } else {
-            displayedScore = score;
-            $numPlayersReady--;
-        }
+    const BroadcastReady = () => {
+        console.log("Ready!");
     }
-
-    const unsubscribe = hasRoundStarted.subscribe((started) => {
-        if (started) {
-            score = displayedScore;
-            isReady = false;
-            dutchPile = 0;
-            blitzPile = 0;
-        }
-    });
-
-    const unsubscribeResetPlayers = resetPlayers.subscribe((reset) => {
-        if (reset) {
-            dutchPile = 0;
-            blitzPile = 0;
-            score = 0;
-            displayedScore = 0;
-            isReady = false;
-        }
-    })
-
-    onDestroy(() => {
-        unsubscribe();
-        unsubscribeResetPlayers();
-    });
 </script>
 
-<style>
-    #player-container {
-        display: flex;
-    }
-</style>
-
-<div id="player-container">
-    <h1 style={hasWon ? "color: green" : "color: black"}>{name}</h1>
+<div class="container">
+	<h1>{name}</h1>
+	<div>
+		<label for="dutch-pile">Dutch pile</label>
+		<input 
+            type="number" 
+            id="dutch-pile" 
+            name="dutch-pile" 
+            bind:value={dutchPile} 
+            min="0" 
+        />
+	</div>
     <div>
-        <label for="dutch-pile">Dutch pile</label>
-        <input type="number" id="dutch-pile" bind:value={dutchPile} name="dutch-pile" min=0 disabled={$hasRoundStarted} />
+		<label for="blitz-pile">Blitz pile</label>
+		<input 
+            type="number" 
+            id="blitz-pile" 
+            name="blitz-pile" 
+            bind:value={blitzPile} 
+            min="0" 
+        />
     </div>
-    <div>
-        <label for="blitz-pile">Blitz pile</label>
-        <input type="number" id="blitz-pile" bind:value={blitzPile} name="blitz-pile" min=0 disabled={$hasRoundStarted}/>
-    </div>
-    <p>Score: {displayedScore}</p>
+    <h1>Score: {score}</h1>
     <div>
         <label for="ready">Ready?</label>
-        <input type="checkbox" id="ready" bind:checked={isReady} onchange={onReady} name="ready" disabled={$hasRoundStarted} />
+        <input
+            type="checkbox"
+            id="ready"
+            name="ready"
+            onchange={BroadcastReady}
+        />
     </div>
 </div>
+
+<style>
+	.container {
+		display: flex;
+	}
+</style>
