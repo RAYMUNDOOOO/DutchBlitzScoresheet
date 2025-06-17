@@ -2,10 +2,6 @@
 	let { name, score } = $props();
 	let dutchPile: number = $state(0);
 	let blitzPile: number = $state(0);
-
-    const BroadcastReady = () => {
-        console.log("Ready!");
-    }
 </script>
 
 <div class="container">
@@ -37,7 +33,6 @@
             type="checkbox"
             id="ready"
             name="ready"
-            onchange={BroadcastReady}
         />
     </div>
 </div>
