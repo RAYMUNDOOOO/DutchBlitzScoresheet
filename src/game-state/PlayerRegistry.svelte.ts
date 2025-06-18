@@ -6,7 +6,7 @@ interface Player {
 	score: number;
 }
 
-const playerMap = new SvelteMap<string, Player>();
+let playerMap = new SvelteMap<string, Player>();
 
 // ALTERING PLAYER REGISTRY
 export const PlayerRegistry = $state({

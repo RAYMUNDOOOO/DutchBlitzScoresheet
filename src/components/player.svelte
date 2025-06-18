@@ -1,7 +1,9 @@
 <script lang="ts">
+    import { UpdateScore } from '../game-state/PlayerRegistry.svelte.ts';
 	let { id, name, score } = $props();
 	let dutchPile: number = $state(0);
 	let blitzPile: number = $state(0);
+    let isReady: boolean = $state(false);
 </script>
 
 <div class="container">
@@ -33,6 +35,14 @@
             type="checkbox"
             id="ready"
             name="ready"
+            bind:checked={isReady}
+            onchange={() => {
+                if (isReady) {
+                    UpdateScore(id, dutchPile - blitzPile);
+                } else {
+                    UpdateScore(id, (dutchPile - blitzPile) * -1);
+                }
+            }}
         />
     </div>
 </div>
