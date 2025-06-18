@@ -1,10 +1,12 @@
+import { SvelteMap } from 'svelte/reactivity'
+
 interface Player {
 	id: string,
 	name: string;
 	score: number;
 }
 
-const playerMap = new Map<string, Player>();
+const playerMap = new SvelteMap<string, Player>();
 
 // ALTERING PLAYER REGISTRY
 export const PlayerRegistry = $state({
