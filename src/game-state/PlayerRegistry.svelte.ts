@@ -22,6 +22,8 @@ export const PlayerRegistry = $state({
 
 		playerMap.set(generatedId, newPlayer);
         console.log(`Added player: ${newName} with ID: ${generatedId}`);
+
+		return newPlayer.id;
 	},
 
 	delete: (id: string) => {
