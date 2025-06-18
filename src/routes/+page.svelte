@@ -1,6 +1,6 @@
 <script lang="ts">
     import { PlayerRegistry } from "../game-state/PlayerRegistry.svelte.ts";
-    import Player from "../components/player.svelte";
+    import Player from "../components/Player.svelte";
 </script>
 
 <div class="player-list">
