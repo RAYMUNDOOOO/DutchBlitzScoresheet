@@ -1,5 +1,5 @@
 <script lang="ts">
-	let { name, score } = $props();
+	let { id, name, score } = $props();
 	let dutchPile: number = $state(0);
 	let blitzPile: number = $state(0);
 </script>
